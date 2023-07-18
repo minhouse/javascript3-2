@@ -29,6 +29,13 @@ function createTaskItem(text) {
   const deleteButton = document.createElement("input");
   deleteButton.type = "button";
   deleteButton.value = "削除";
+  // deleteButtonがクリックされたときのイベントハンドラがdeleteTask関数を呼び出し削除対象のidを渡す
+  deleteButton.addEventListener("click", function () {
+    deleteTask(task.id);
+  });
+
+  taskItem.textContent = `${task.id} ${task.text}`;
+  taskItem.appendChild(statusButton);
   taskItem.appendChild(deleteButton);
 
   return taskItem;
@@ -48,6 +55,20 @@ function addTask() {
 
   const taskItem = createTaskItem(taskText);
   appendResult(taskItem);
+}
+
+// タスクの削除処理
+function deleteTask(taskId) {
+  const index = tasks.findIndex(function (t) {
+    return t.id === taskId;
+  });
+  if (index !== -1) {
+    tasks.splice(index, 1);
+    const taskItem = document.getElementById("task_" + taskId);
+    if (taskItem) {
+      taskItem.remove();
+    }
+  }
 }
 
 // 追加ボタンのクリックイベントをハンドリング
